@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Loan_Management_System.Migrations
 {
-    public partial class createModelsAll : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,8 +54,8 @@ namespace Loan_Management_System.Migrations
                     ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LoanAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Approved_by = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Approved_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Approved_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Approved_Date = table.Column<DateTime>(type: "datetime2", nullable: true),
                     RejectionReason = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AddedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -74,8 +74,7 @@ namespace Loan_Management_System.Migrations
                         name: "FK_LoanApplications_Users_Approved_by",
                         column: x => x.Approved_by,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -110,11 +109,11 @@ namespace Loan_Management_System.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Loan = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    loanId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DisbursmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DisbursmentAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    DisbursmentAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     MoreInfo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DisbursedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DisbursedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     AddedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -123,8 +122,8 @@ namespace Loan_Management_System.Migrations
                 {
                     table.PrimaryKey("PK_LoanDisbursments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_LoanDisbursments_Loans_Loan",
-                        column: x => x.Loan,
+                        name: "FK_LoanDisbursments_Loans_loanId",
+                        column: x => x.loanId,
                         principalTable: "Loans",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -132,8 +131,7 @@ namespace Loan_Management_System.Migrations
                         name: "FK_LoanDisbursments_Users_DisbursedBy",
                         column: x => x.DisbursedBy,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -199,9 +197,9 @@ namespace Loan_Management_System.Migrations
                 column: "DisbursedBy");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LoanDisbursments_Loan",
+                name: "IX_LoanDisbursments_loanId",
                 table: "LoanDisbursments",
-                column: "Loan");
+                column: "loanId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Loans_Application",

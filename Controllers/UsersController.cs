@@ -9,6 +9,8 @@ using Loan_Management_System.Models;
 using Loan_Management_System.Models.UserX;
 using Loan_Management_System.Utils;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using System.Text;
 
 namespace Loan_Management_System.Controllers
 {
@@ -18,22 +20,33 @@ namespace Loan_Management_System.Controllers
     {
         private readonly DBContext _context;
         private readonly IMapper _mapper;
+        private readonly IConfiguration _config;
 
-
-        public UsersController(DBContext context, IMapper mapper)
+        public UsersController(DBContext context, IMapper mapper , IConfiguration config)
         {
             _context = context;
             _mapper = mapper;
+            _config = config;
         }
 
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers([FromQuery]string? keywords = null)
+        [Authorize(Policy = "Admin")]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers([FromQuery]string? keywords = null , [FromHeader]string? Authorization=null)
         {
           if (_context.Users == null)
           {
               return NotFound();
           }
+
+            //var claims = User.Claims;
+
+            //StringBuilder claimList = new StringBuilder();
+            //foreach (var claim in claims)
+            //{
+            //    claimList.AppendLine($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
+            //}
+
 
             var query = _context.Users.AsQueryable();
 
@@ -42,11 +55,14 @@ namespace Loan_Management_System.Controllers
                 query = query.Where(c => c.Username.Contains(keywords));
             }
 
+            //return Ok(claimList.ToString());
+
             return Ok(_mapper.Map<List<UserDto>>(await query.ToListAsync()));
         }
 
         // GET: api/Users/5
         [HttpGet("{id}")]
+        [Authorize(Policy = "Admin")]
         public async Task<ActionResult<UserDto>> GetUser(Guid id)
         {
           if (_context.Users == null)
@@ -66,6 +82,7 @@ namespace Loan_Management_System.Controllers
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> PutUser(Guid id, UserDto userUpdateDto)
         {
             if (id != userUpdateDto.Id)
@@ -111,6 +128,7 @@ namespace Loan_Management_System.Controllers
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Policy = "Admin")]
         public async Task<ActionResult<User>> PostUser(User user)
         {
           if (_context.Users == null)
@@ -125,6 +143,7 @@ namespace Loan_Management_System.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginSchema login)
         {
@@ -142,7 +161,14 @@ namespace Loan_Management_System.Controllers
 
             if (PasswordHasherUtility.VerifyPassword(user.PasswordHash , login.password))
             {
-                return Ok("Login successful");
+                var token = TokenGenerator.GenerateToken(_config , user);
+                return Ok(new
+                {
+                    Username = login.Username,
+                    id = user.Id,
+                    role = user.Role,
+                    token = token
+                });
             }
 
             return Unauthorized("Login Failed");
@@ -152,6 +178,7 @@ namespace Loan_Management_System.Controllers
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
             if (_context.Users == null)

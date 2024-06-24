@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Loan_Management_System.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20240613143020_LoanDisbursmentFix")]
-    partial class LoanDisbursmentFix
+    [Migration("20240618133355_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -128,20 +128,20 @@ namespace Loan_Management_System.Migrations
                     b.Property<DateTime>("DisbursmentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("Loan")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("MoreInfo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("loanId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DisbursedBy");
 
-                    b.HasIndex("Loan");
+                    b.HasIndex("loanId");
 
                     b.ToTable("LoanDisbursments");
                 });
@@ -156,9 +156,6 @@ namespace Loan_Management_System.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("Application")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("Client")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DeletedAt")
@@ -189,8 +186,6 @@ namespace Loan_Management_System.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Application");
-
-                    b.HasIndex("Client");
 
                     b.ToTable("Loans");
                 });
@@ -319,34 +314,26 @@ namespace Loan_Management_System.Migrations
                         .WithMany()
                         .HasForeignKey("DisbursedBy");
 
-                    b.HasOne("Loan_Management_System.Models.LoanX.Loan", "loan")
+                    b.HasOne("Loan_Management_System.Models.LoanX.Loan", "Loan")
                         .WithMany()
-                        .HasForeignKey("Loan")
+                        .HasForeignKey("loanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Loan");
 
-                    b.Navigation("loan");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Loan_Management_System.Models.LoanX.Loan", b =>
                 {
-                    b.HasOne("Loan_Management_System.Models.LoanApplicationX.LoanApplication", "application")
+                    b.HasOne("Loan_Management_System.Models.LoanApplicationX.LoanApplication", "LoanApplication")
                         .WithMany()
                         .HasForeignKey("Application")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Loan_Management_System.Models.ClientX.Client", "client")
-                        .WithMany()
-                        .HasForeignKey("Client")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("application");
-
-                    b.Navigation("client");
+                    b.Navigation("LoanApplication");
                 });
 
             modelBuilder.Entity("Loan_Management_System.Models.RepaymentScheduleX.RepaymentSchedule", b =>

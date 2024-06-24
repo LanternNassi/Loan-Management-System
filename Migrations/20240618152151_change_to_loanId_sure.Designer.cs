@@ -4,6 +4,7 @@ using Loan_Management_System.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Loan_Management_System.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20240618152151_change_to_loanId_sure")]
+    partial class change_to_loanId_sure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -296,7 +298,7 @@ namespace Loan_Management_System.Migrations
                         .HasForeignKey("Approved_by");
 
                     b.HasOne("Loan_Management_System.Models.ClientX.Client", "Client")
-                        .WithMany("LoanApplications")
+                        .WithMany()
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -354,11 +356,6 @@ namespace Loan_Management_System.Migrations
                         .IsRequired();
 
                     b.Navigation("RepaymentSchedule");
-                });
-
-            modelBuilder.Entity("Loan_Management_System.Models.ClientX.Client", b =>
-                {
-                    b.Navigation("LoanApplications");
                 });
 #pragma warning restore 612, 618
         }

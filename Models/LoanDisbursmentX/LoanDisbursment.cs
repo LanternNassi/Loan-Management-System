@@ -10,14 +10,14 @@ namespace Loan_Management_System.Models.LoanDisbursmentX
     public class LoanDisbursment : GeneralFields
     {
         public Guid Id { get; set; }
-        public Guid Loan { get; set; }
+        public Guid loanId { get; set; }
         public DateTime DisbursmentDate { get; set; }
         public decimal? DisbursmentAmount { get; set;}
         public string? MoreInfo { get; set; }
         public Guid? DisbursedBy { get; set; }
 
-        [ForeignKey("Loan")]
-        public virtual Loan loan { get; set; }
+        [ForeignKey("loanId")]
+        public virtual Loan Loan { get; set; }
 
         [ForeignKey("DisbursedBy")]
         public virtual User User { get; set; }
@@ -27,7 +27,7 @@ namespace Loan_Management_System.Models.LoanDisbursmentX
     public class LoanDisbursmentDto : GeneralFields
     {
         public Guid Id { get; set; }
-        public Guid Loan { get; set; }
+        public Guid loanId { get; set; }
         public DateTime? DisbursmentDate { get; set; }
         public decimal DisbursmentAmount { get; set; }
         public string? MoreInfo { get; set; }

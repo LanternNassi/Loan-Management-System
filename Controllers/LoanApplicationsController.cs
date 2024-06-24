@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Loan_Management_System.Models;
 using Loan_Management_System.Models.LoanApplicationX;
 using AutoMapper;
+using Loan_Management_System.Models.LoanX;
 
 namespace Loan_Management_System.Controllers
 {
@@ -75,14 +76,42 @@ namespace Loan_Management_System.Controllers
         // PUT: api/LoanApplications/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLoanApplication(Guid id, LoanApplicationDto loanApplication)
+        public async Task<IActionResult> PutLoanApplication(Guid id, LoanCreation loanApplication)
         {
             if (id != loanApplication.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(_mapper.Map<LoanApplication>(loanApplication)).State = EntityState.Modified;
+            var initial_loanApplication = await _context.LoanApplications.FindAsync(id);
+
+            if (loanApplication.Status == "Approved" && (initial_loanApplication.Status == "Pending"))
+            {
+                //Create Loan automatically
+
+                Loan new_loan = new Loan();
+                new_loan.Application = id;
+                new_loan.LoanAmount = initial_loanApplication.LoanAmount;
+                new_loan.StartDate = loanApplication.StartDate;
+                new_loan.EndDate = loanApplication.EndDate;
+                new_loan.InterestRate = loanApplication.InterestRate;
+                new_loan.Status = "Active";
+
+                decimal? interest = initial_loanApplication.LoanAmount * (loanApplication.InterestRate/100);
+                new_loan.OutStandingBalance = interest.HasValue ? interest.Value + initial_loanApplication.LoanAmount : initial_loanApplication.LoanAmount;
+
+                _context.Loans.Add(new_loan);
+
+                loanApplication.Approved_Date = DateTime.Now;
+
+            }
+
+            var new_loanApplication = _mapper.Map<LoanApplication>(loanApplication);
+
+            new_loanApplication.AddedAt = initial_loanApplication.AddedAt;
+
+            _context.Entry(initial_loanApplication).CurrentValues.SetValues(new_loanApplication);
+
 
             try
             {
@@ -137,6 +166,8 @@ namespace Loan_Management_System.Controllers
 
             return NoContent();
         }
+
+        [HttpPatch("{id}")]
 
         private bool LoanApplicationExists(Guid id)
         {

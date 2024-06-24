@@ -26,7 +26,7 @@ namespace Loan_Management_System.Controllers
 
         // GET: api/LoanDisbursments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LoanDisbursmentDto>>> GetLoanDisbursments([FromQuery]Guid? Loan=null , [FromQuery]Guid? Disbursed_by=null)
+        public async Task<ActionResult<IEnumerable<LoanDisbursmentDto>>> GetLoanDisbursments([FromQuery]Guid? LoanId=null , [FromQuery]Guid? Disbursed_by=null)
         {
           if (_context.LoanDisbursments == null)
           {
@@ -35,9 +35,9 @@ namespace Loan_Management_System.Controllers
 
             var query = _context.LoanDisbursments.AsQueryable();
 
-            if (Loan != null)
+            if (LoanId != null)
             {
-                query = query.Where(c => c.Loan == Loan);
+                query = query.Where(c => c.loanId == LoanId);
             }
 
             if (Disbursed_by != null)

@@ -22,6 +22,7 @@ namespace Loan_Management_System.Models
 
             CreateMap<LoanApplication, LoanApplicationDto>();
             CreateMap<LoanApplicationDto, LoanApplication>();
+            CreateMap<LoanCreation, LoanApplication>();
 
             CreateMap<LoanDisbursment, LoanDisbursmentDto>();
             CreateMap<LoanDisbursmentDto, LoanDisbursment>();

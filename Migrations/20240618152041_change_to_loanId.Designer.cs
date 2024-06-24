@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Loan_Management_System.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20240613133051_Loans")]
-    partial class Loans
+    [Migration("20240618152041_change_to_loanId")]
+    partial class change_to_loanId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -73,10 +73,10 @@ namespace Loan_Management_System.Migrations
                     b.Property<DateTime>("AddedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Approved_Date")
+                    b.Property<DateTime?>("Approved_Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("Approved_by")
+                    b.Property<Guid?>("Approved_by")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ClientId")
@@ -119,17 +119,14 @@ namespace Loan_Management_System.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("DisbursedBy")
+                    b.Property<Guid?>("DisbursedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("DisbursmentAmount")
+                    b.Property<decimal?>("DisbursmentAmount")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("DisbursmentDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid>("Loan")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("MoreInfo")
                         .HasColumnType("nvarchar(max)");
@@ -137,11 +134,14 @@ namespace Loan_Management_System.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("loanId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DisbursedBy");
 
-                    b.HasIndex("Loan");
+                    b.HasIndex("loanId");
 
                     b.ToTable("LoanDisbursments");
                 });
@@ -158,16 +158,13 @@ namespace Loan_Management_System.Migrations
                     b.Property<Guid>("Application")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("Client")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("InterestRate")
+                    b.Property<decimal?>("InterestRate")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("LoanAmount")
@@ -176,7 +173,7 @@ namespace Loan_Management_System.Migrations
                     b.Property<decimal>("OutStandingBalance")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
@@ -189,8 +186,6 @@ namespace Loan_Management_System.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Application");
-
-                    b.HasIndex("Client");
 
                     b.ToTable("Loans");
                 });
@@ -207,10 +202,7 @@ namespace Loan_Management_System.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("Loan")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("RepaymentAmout")
+                    b.Property<decimal>("RepaymentAmount")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("RepaymentDate")
@@ -223,9 +215,15 @@ namespace Loan_Management_System.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("loan")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("loanId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("id");
 
-                    b.HasIndex("Loan");
+                    b.HasIndex("loan");
 
                     b.ToTable("RepaymentSchedules");
                 });
@@ -300,9 +298,7 @@ namespace Loan_Management_System.Migrations
                 {
                     b.HasOne("Loan_Management_System.Models.UserX.User", "User")
                         .WithMany()
-                        .HasForeignKey("Approved_by")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Approved_by");
 
                     b.HasOne("Loan_Management_System.Models.ClientX.Client", "Client")
                         .WithMany()
@@ -319,49 +315,39 @@ namespace Loan_Management_System.Migrations
                 {
                     b.HasOne("Loan_Management_System.Models.UserX.User", "User")
                         .WithMany()
-                        .HasForeignKey("DisbursedBy")
+                        .HasForeignKey("DisbursedBy");
+
+                    b.HasOne("Loan_Management_System.Models.LoanX.Loan", "Loan")
+                        .WithMany()
+                        .HasForeignKey("loanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Loan_Management_System.Models.LoanX.Loan", "loan")
-                        .WithMany()
-                        .HasForeignKey("Loan")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Loan");
 
                     b.Navigation("User");
-
-                    b.Navigation("loan");
                 });
 
             modelBuilder.Entity("Loan_Management_System.Models.LoanX.Loan", b =>
                 {
-                    b.HasOne("Loan_Management_System.Models.LoanApplicationX.LoanApplication", "application")
+                    b.HasOne("Loan_Management_System.Models.LoanApplicationX.LoanApplication", "LoanApplication")
                         .WithMany()
                         .HasForeignKey("Application")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Loan_Management_System.Models.ClientX.Client", "client")
-                        .WithMany()
-                        .HasForeignKey("Client")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("application");
-
-                    b.Navigation("client");
+                    b.Navigation("LoanApplication");
                 });
 
             modelBuilder.Entity("Loan_Management_System.Models.RepaymentScheduleX.RepaymentSchedule", b =>
                 {
-                    b.HasOne("Loan_Management_System.Models.LoanX.Loan", "loan")
+                    b.HasOne("Loan_Management_System.Models.LoanX.Loan", "Loan")
                         .WithMany()
-                        .HasForeignKey("Loan")
+                        .HasForeignKey("loan")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("loan");
+                    b.Navigation("Loan");
                 });
 
             modelBuilder.Entity("Loan_Management_System.Models.RepaymentsX.Repayment", b =>
