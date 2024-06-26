@@ -13,15 +13,15 @@ namespace Loan_Management_System.Migrations
                 name: "Clients",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OtherNames = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Contact = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NIN = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AddedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    OtherNames = table.Column<string>(type: "text", nullable: false),
+                    Contact = table.Column<string>(type: "text", nullable: false),
+                    Address = table.Column<string>(type: "text", nullable: false),
+                    NIN = table.Column<string>(type: "text", nullable: false),
+                    AddedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -32,14 +32,14 @@ namespace Loan_Management_System.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AddedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Username = table.Column<string>(type: "text", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: true),
+                    Role = table.Column<string>(type: "text", nullable: false),
+                    AddedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -50,16 +50,16 @@ namespace Loan_Management_System.Migrations
                 name: "LoanApplications",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LoanAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Approved_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Approved_Date = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    RejectionReason = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ClientId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LoanAmount = table.Column<decimal>(type: "numeric", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    Approved_by = table.Column<Guid>(type: "uuid", nullable: true),
+                    Approved_Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    RejectionReason = table.Column<string>(type: "text", nullable: true),
+                    AddedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -81,17 +81,17 @@ namespace Loan_Management_System.Migrations
                 name: "Loans",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Application = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LoanAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    InterestRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OutStandingBalance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AddedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Application = table.Column<Guid>(type: "uuid", nullable: false),
+                    LoanAmount = table.Column<decimal>(type: "numeric", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    InterestRate = table.Column<decimal>(type: "numeric", nullable: true),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    OutStandingBalance = table.Column<decimal>(type: "numeric", nullable: false),
+                    AddedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -108,15 +108,15 @@ namespace Loan_Management_System.Migrations
                 name: "LoanDisbursments",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    loanId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DisbursmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DisbursmentAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    MoreInfo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DisbursedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    AddedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    loanId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DisbursmentDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DisbursmentAmount = table.Column<decimal>(type: "numeric", nullable: true),
+                    MoreInfo = table.Column<string>(type: "text", nullable: true),
+                    DisbursedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    AddedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -138,21 +138,21 @@ namespace Loan_Management_System.Migrations
                 name: "RepaymentSchedules",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Loan = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RepaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RepaymentAmout = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AddedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    loanId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RepaymentDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    RepaymentAmount = table.Column<decimal>(type: "numeric", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    AddedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RepaymentSchedules", x => x.id);
                     table.ForeignKey(
-                        name: "FK_RepaymentSchedules_Loans_Loan",
-                        column: x => x.Loan,
+                        name: "FK_RepaymentSchedules_Loans_loanId",
+                        column: x => x.loanId,
                         principalTable: "Loans",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -162,13 +162,13 @@ namespace Loan_Management_System.Migrations
                 name: "Repayments",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Schedule = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    MoreInfo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Schedule = table.Column<Guid>(type: "uuid", nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric", nullable: false),
+                    MoreInfo = table.Column<string>(type: "text", nullable: true),
+                    AddedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -212,9 +212,9 @@ namespace Loan_Management_System.Migrations
                 column: "Schedule");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RepaymentSchedules_Loan",
+                name: "IX_RepaymentSchedules_loanId",
                 table: "RepaymentSchedules",
-                column: "Loan");
+                column: "loanId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

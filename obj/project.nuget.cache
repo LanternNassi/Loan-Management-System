@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "DE9WbvTnoZQlGlUKmwzjpJkV5uP0Gqv1nWNY+GJmlLFAVgOPkcduFpYP/UDIDwy9ZcpLIncTqjnzFaR5baPsIw==",
+  "dgSpecHash": "JwF3iSK/u3oZoUrOGe6+obzXxV7VEDkR0g5mt5A8g8LUoy98RssPFkB/T1PsqqVrJx/ctUJBmu6JecXZHDtZhQ==",
   "success": true,
   "projectFilePath": "D:\\VSProjects\\Loan Management System\\Loan Management System.csproj",
   "expectedPackageFiles": [
@@ -143,6 +143,8 @@
     "C:\\Users\\SHANY\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\SHANY\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
     "C:\\Users\\SHANY\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\SHANY\\.nuget\\packages\\npgsql\\6.0.11\\npgsql.6.0.11.nupkg.sha512",
+    "C:\\Users\\SHANY\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\6.0.29\\npgsql.entityframeworkcore.postgresql.6.0.29.nupkg.sha512",
     "C:\\Users\\SHANY\\.nuget\\packages\\nuget.common\\6.6.1\\nuget.common.6.6.1.nupkg.sha512",
     "C:\\Users\\SHANY\\.nuget\\packages\\nuget.configuration\\6.6.1\\nuget.configuration.6.6.1.nupkg.sha512",
     "C:\\Users\\SHANY\\.nuget\\packages\\nuget.dependencyresolver.core\\6.6.1\\nuget.dependencyresolver.core.6.6.1.nupkg.sha512",

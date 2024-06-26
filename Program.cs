@@ -7,13 +7,21 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
+
+// Add services to the container.
 builder.Services.AddDbContext<DBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("LMSCS"))
-);
+      options.UseNpgsql(
+          builder.Configuration.GetConnectionString("LMSPOSTGRES")));
+
+
+//builder.Services.AddDbContext<DBContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("LMSCS"))
+//);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
