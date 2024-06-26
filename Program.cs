@@ -14,9 +14,19 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 
 // Add services to the container.
-builder.Services.AddDbContext<DBContext>(options =>
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDbContext<DBContext>(options =>
       options.UseNpgsql(
           builder.Configuration.GetConnectionString("LMSPOSTGRES")));
+
+}else{
+    builder.Services.AddDbContext<DBContext>(options =>
+      options.UseNpgsql(
+          builder.Configuration.GetConnectionString("LMSPROD")));
+
+}
 
 
 //builder.Services.AddDbContext<DBContext>(options =>
