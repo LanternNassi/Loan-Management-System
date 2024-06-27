@@ -38,6 +38,6 @@ jobs:
     - name: Run migrations
       run: |
         echo "DBCONNECTION=${{ secrets.DBCONNECTION }}" >> $GITHUB_ENV  # Add DB connection string as environment variable
-        docker run --env DBCONNECTION nessimntambi/loan_backend_migrations:latest database update --connection "$DBCONNECTION"
+        docker run --env DBCONNECTION nessimntambi/loan_backend_migrations:latest database update --connection "${{secrets.DBCONNECTION}}"
            
 
