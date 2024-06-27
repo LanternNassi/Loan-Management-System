@@ -18,13 +18,12 @@ RUN dotnet publish "Loan Management System.csproj" -c Release -o /app/publish /p
 
 
 # Migrations stage
-FROM build AS migrations
-WORKDIR /src
-COPY . .
+FROM publish AS migrations
+WORKDIR /app
+COPY --from=publish /app/publish .
 RUN dotnet tool install --global dotnet-ef --version 6.0
 ENV PATH="$PATH:/root/.dotnet/tools"
-RUN dotnet ef database update --no-build
-
+ENTRYPOINT ["dotnet-ef"]
 
 FROM base AS final
 WORKDIR /app
