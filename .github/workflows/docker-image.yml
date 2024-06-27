@@ -37,7 +37,6 @@ jobs:
       run: |
         docker run --rm \
           -e DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }} \
-          -w /app \
           nessimntambi/loan_backend_migrations:latest \
-          dotnet-ef database update --project="Loan Management System.csproj" --connection "$DB_CONNECTION_STRING"
+          dotnet-ef database update --connection "$DB_CONNECTION_STRING"
 
