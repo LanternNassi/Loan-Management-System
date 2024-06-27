@@ -32,7 +32,7 @@ jobs:
       run: |
         docker build --target migrations \
         --build-arg ASPNETCORE_ENVIRONMENT=Production \
-        --build-arg DB_CONNECTION_STRING=${{ secrets.DBCONNECTION }} \
+        --build-arg DBCONNECTION=${{ secrets.DBCONNECTION }} \
         -t "${{secrets.DOCKERHUB_USERNAME}}"/loan_backend_migrations:latest .
     
         docker push "${{secrets.DOCKERHUB_USERNAME}}"/loan_backend_migrations:latest
