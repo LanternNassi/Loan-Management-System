@@ -25,7 +25,7 @@ jobs:
         tags: nessimntambi/loan_backend:latest
         build-args: |
           ASPNETCORE_ENVIRONMENT=Production
-          DB_CONNECTION_STRING=${{ secrets.DBCONNECTION }}
+          DBCONNECTION=${{ secrets.DBCONNECTION }}
 
 
     - name: Build and push migrations image
@@ -37,6 +37,6 @@ jobs:
       
     - name: Run migrations
       run: |
-        docker run nessimntambi/loan_backend_migrations:latest database update
+        docker run --env DBCONNECTION=${{ secrets.DBCONNECTION }} nessimntambi/loan_backend_migrations:latest database update
            
 
