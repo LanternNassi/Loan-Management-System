@@ -10,28 +10,21 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
+
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 
 // Add services to the container.
 
-if (builder.Environment.IsDevelopment())
-{
-    builder.Services.AddDbContext<DBContext>(options =>
+builder.Services.AddDbContext<DBContext>(options =>
       options.UseNpgsql(
-          builder.Configuration.GetConnectionString("LMSPOSTGRES")));
+          builder.Configuration.GetConnectionString("DBCONNECTION")));
 
-}else{
-    builder.Services.AddDbContext<DBContext>(options =>
-      options.UseNpgsql(
-          builder.Configuration.GetConnectionString("LMSPROD")));
-
-}
-
-
-//builder.Services.AddDbContext<DBContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("LMSCS"))
-//);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
