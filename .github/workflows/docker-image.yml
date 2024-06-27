@@ -30,7 +30,7 @@ jobs:
 
     - name: Build and push migrations image
       run: |
-        docker build --target migrations -t "${{secrets.DOCKERHUB_USERNAME}}"/loan_backend_migrations:latest .
+        docker build --target migrations --args "ASPNETCORE_ENVIRONMENT=Production,DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }}"  -t "${{secrets.DOCKERHUB_USERNAME}}"/loan_backend_migrations:latest .
         docker push "${{secrets.DOCKERHUB_USERNAME}}"/loan_backend_migrations:latest
       
     - name: Run migrations
