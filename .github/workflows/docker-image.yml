@@ -27,9 +27,3 @@ jobs:
           ASPNETCORE_ENVIRONMENT=Production
           DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }}
 
-    - name: Run migrations
-      run: |
-        docker run --rm \
-          -e DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }} \
-          nessimntambi/loan_backend:latest dotnet ef database update
-

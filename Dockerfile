@@ -16,6 +16,17 @@ RUN dotnet build "Loan Management System.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "Loan Management System.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS migrations
+WORKDIR /app
+COPY ["Loan Management System.csproj", "."]
+RUN dotnet restore "./Loan Management System.csproj"
+# Install dotnet-ef tool (assuming it's not already installed)
+RUN dotnet tool install --global dotnet-ef --version 6.0  
+# Add your migration logic here
+RUN dotnet ef database update
+
+
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
