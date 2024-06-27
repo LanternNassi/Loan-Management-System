@@ -37,8 +37,6 @@ jobs:
       
     - name: Run migrations
       run: |
-        docker run --rm \
-          -e DBCONNECTION=${{ secrets.DBCONNECTION }} \
-          nessimntambi/loan_backend_migrations:latest \
-          database update
+        docker run --rm -e DBCONNECTION=${{ secrets.DBCONNECTION }} nessimntambi/loan_backend_migrations:latest database update
+           
 
