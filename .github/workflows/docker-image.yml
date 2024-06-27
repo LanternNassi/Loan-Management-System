@@ -40,5 +40,5 @@ jobs:
         docker run --rm \
           -e DBCONNECTION=${{ secrets.DBCONNECTION }} \
           nessimntambi/loan_backend_migrations:latest \
-          database update --connection "$DBCONNECTION"
+          database update
 
