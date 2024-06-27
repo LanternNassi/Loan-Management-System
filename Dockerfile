@@ -18,9 +18,7 @@ RUN dotnet publish "Loan Management System.csproj" -c Release -o /app/publish /p
 
 
 # Migrations stage
-FROM publish AS migrations
-WORKDIR /app
-COPY --from=publish /app/publish .
+FROM build AS migrations
 RUN dotnet tool install --global dotnet-ef --version 6.0
 ENV PATH="$PATH:/root/.dotnet/tools"
 ENTRYPOINT ["dotnet-ef"]
