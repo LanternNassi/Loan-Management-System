@@ -31,8 +31,6 @@ jobs:
     - name: Build and push migrations image
       run: |
         docker build --target migrations \
-        --build-arg ASPNETCORE_ENVIRONMENT=Production \
-        --build-arg DBCONNECTION=${{ secrets.DBCONNECTION }} \
         -t ${{secrets.DOCKERHUB_USERNAME}}/loan_backend_migrations:latest .
     
         docker push ${{secrets.DOCKERHUB_USERNAME}}/loan_backend_migrations:latest
