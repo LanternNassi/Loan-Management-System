@@ -36,6 +36,8 @@ namespace Loan_Management_System.Controllers
 
             var query = _context.LoanApplications.AsQueryable();
 
+            query = query.Include(c => c.Client).Include(c => c.User);
+
             if (!string.IsNullOrEmpty(applicationquery.ClientId.ToString()))
             {
                 query = query.Where(c => c.ClientId== applicationquery.ClientId);
@@ -50,6 +52,8 @@ namespace Loan_Management_System.Controllers
             {
                 query = query.Where(c => c.Approved_by == applicationquery.Approved_by);
             }
+
+
 
             return Ok(_mapper.Map<List<LoanApplicationDto>>(await query.ToListAsync()));
 

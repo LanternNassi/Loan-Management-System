@@ -32,6 +32,8 @@ namespace Loan_Management_System.Models.LoanApplicationX
         public Guid? Approved_by { get; set; }
         public DateTime? Approved_Date { get; set; }
         public string? RejectionReason { get; set; }
+        public ClientDto? Client { get; set; }
+        public UserDto? User { get; set; }
 
     }
 

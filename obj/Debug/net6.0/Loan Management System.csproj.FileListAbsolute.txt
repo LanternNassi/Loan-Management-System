@@ -253,3 +253,4 @@ D:\VSProjects\Loan Management System\bin\Debug\net6.0\Microsoft.AspNetCore.Authe
 D:\VSProjects\Loan Management System\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
 D:\VSProjects\Loan Management System\bin\Debug\net6.0\Npgsql.dll
 D:\VSProjects\Loan Management System\bin\Debug\net6.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+D:\VSProjects\Loan Management System\bin\Debug\net6.0\appsettings.Production.json
