@@ -27,6 +27,17 @@ jobs:
           ASPNETCORE_ENVIRONMENT=Production
           DBCONNECTION=${{ secrets.DBCONNECTION }}
 
+    - name: Build and push CC backend image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: nessimntambi/lms-cc-back:latest
+        build-args: |
+          ASPNETCORE_ENVIRONMENT=Production
+          DBCONNECTION=${{ secrets.DBCONNECTION }}
+
 
     - name: Build and push migrations image
       run: |
