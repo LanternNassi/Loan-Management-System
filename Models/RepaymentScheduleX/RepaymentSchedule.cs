@@ -12,6 +12,7 @@ namespace Loan_Management_System.Models.RepaymentScheduleX
         public Guid loanId { get; set; }
         public DateTime RepaymentDate { get; set; }
         public decimal RepaymentAmount { get; set; }
+        public decimal? PaidAmount { get; set; }
         public string Status { get; set; }
 
         [ForeignKey("loanId")]
@@ -25,6 +26,8 @@ namespace Loan_Management_System.Models.RepaymentScheduleX
         public Guid loanId { get; set; }
         public DateTime RepaymentDate { get; set; }
         public decimal RepaymentAmount { get; set; }
+        public decimal? PaidAmount { get; set; }
+
         public string Status { get; set; } // Pending , Missed , Paid
     }
 
