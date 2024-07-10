@@ -29,12 +29,14 @@ namespace Loan_Management_System.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LoanApplicationDto>>> GetLoanApplications([FromQuery] LoanApplicationQuery? applicationquery )
         {
-          if (_context.LoanApplications == null)
-          {
-              return NotFound();
-          }
+            
+            if (_context.LoanApplications == null)
+            {
+                return NotFound();
+            }
 
             var query = _context.LoanApplications.AsQueryable();
+            int total_applications = query.Count();
 
             query = query.Include(c => c.Client).Include(c => c.User);
 
@@ -53,9 +55,26 @@ namespace Loan_Management_System.Controllers
                 query = query.Where(c => c.Approved_by == applicationquery.Approved_by);
             }
 
+            var meta_data = new {
+                total_applications,
 
+                total_query_applications = query.Count(),
+                approved = query.Where(c => c.Status == "Approved").Count(),
+                Pending = query.Where(c => c.Status == "Pending").Count(),
+                Rejected = query.Where(c => c.Status == "Rejected").Count(),
 
-            return Ok(_mapper.Map<List<LoanApplicationDto>>(await query.ToListAsync()));
+                query_approved_amount = query.Where(c => c.Status == "Approved").Sum(c => c.LoanAmount),
+                query_pending_amount = query.Where(c => c.Status == "Pending").Sum(c => c.LoanAmount),
+                query_rejected_amount = query.Where(c => c.Status == "Rejected").Sum(c => c.LoanAmount),
+
+            };
+            
+            var applications = _mapper.Map<List<LoanApplicationDto>>(await query.ToListAsync());
+
+            return Ok(new {
+                meta_data,
+                data = applications
+            });
 
         }
 

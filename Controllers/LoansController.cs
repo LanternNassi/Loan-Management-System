@@ -38,6 +38,7 @@ namespace Loan_Management_System.Controllers
           }
 
             var query = _context.Loans.AsQueryable();
+            query = query.Include(c => c.LoanApplication).ThenInclude(c => c.Client);
 
             if (status != null)
             {

@@ -147,10 +147,53 @@ namespace Loan_Management_System.Controllers
           {
               return Problem("Entity set 'DBContext.RepaymentSchedules'  is null.");
           }
-            _context.RepaymentSchedules.Add(_mapper.Map<RepaymentSchedule>(repaymentSchedule));
-            await _context.SaveChangesAsync();
 
-            return Ok();
+            var loan = _context.Loans.Find(repaymentSchedule.loanId);
+
+            //Checking whether the schedule falls within the loan time
+            if (repaymentSchedule.RepaymentDate <= loan.StartDate)
+            {
+                return BadRequest("The Loan Repayment Schedule should not go below the loan startDate");
+            }
+
+            if (repaymentSchedule.RepaymentDate > loan.EndDate)
+            {
+                return BadRequest("The Loan Repayment Schedule should not go above the loan startDate");
+            }
+
+            if (repaymentSchedule.RepaymentDate < DateTime.Today)
+            {
+                return BadRequest("Invalid Date to set this repayment schedule");
+            }
+
+            var schedules = _context.RepaymentSchedules.Where(c => c.Loan.Id == repaymentSchedule.loanId);
+            decimal total_schedule_amount = schedules.Sum(c => c.RepaymentAmount);
+            total_schedule_amount += repaymentSchedule.RepaymentAmount;
+
+
+            if (total_schedule_amount > loan.LoanAmount)
+            {
+                return BadRequest("Total Repayment schedule Amount cannot exceed Loan Amount");
+            }
+
+            //Checking if the loan was disbursed
+            var disbursments = _context.LoanDisbursments.Where(c => c.Loan.Id == repaymentSchedule.loanId);
+            if (disbursments.Count() <= 0)
+            {
+                return BadRequest("This loan was not disbursed hence cannot be scheduled for payments");
+            }
+            decimal? total_disbursment_amount = disbursments.Sum(c => c.DisbursmentAmount);
+            if ((total_disbursment_amount==null) || (total_disbursment_amount < loan.LoanAmount))
+            {
+                return BadRequest("This loan was not completely disbursed to the client to start scheduling payments");
+            }
+
+
+
+          _context.RepaymentSchedules.Add(_mapper.Map<RepaymentSchedule>(repaymentSchedule));
+          await _context.SaveChangesAsync();
+
+          return Ok();
 
         }
 

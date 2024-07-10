@@ -7,6 +7,9 @@ using Loan_Management_System.Models.LoanDisbursmentX;
 using Loan_Management_System.Models.LoanX;
 using Loan_Management_System.Models.RepaymentScheduleX;
 using Loan_Management_System.Models.RepaymentsX;
+using Loan_Management_System.Models.AccountX;
+using Loan_Management_System.Models.DepositX;
+using Loan_Management_System.Models.WithdrawalX;
 
 namespace Loan_Management_System.Models
 {
@@ -35,6 +38,15 @@ namespace Loan_Management_System.Models
 
             CreateMap<Repayment, RepaymentDto>();
             CreateMap<RepaymentDto, Repayment>();
+
+            CreateMap<Account, AccountDto>();
+            CreateMap<AccountDto, Account>();
+
+            CreateMap<Deposit, DepositDto>();
+            CreateMap<DepositDto, Deposit>();
+
+            CreateMap<Withdrawal, WithdrawalDto>();
+            CreateMap<WithdrawalDto, Withdrawal>();
         
         }
 
