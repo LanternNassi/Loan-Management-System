@@ -5,6 +5,9 @@ using Loan_Management_System.Models.LoanDisbursmentX;
 using Loan_Management_System.Models.LoanX;
 using Loan_Management_System.Models.RepaymentScheduleX;
 using Loan_Management_System.Models.RepaymentsX;
+using Loan_Management_System.Models.AccountX;
+using Loan_Management_System.Models.DepositX;
+using Loan_Management_System.Models.WithdrawalX;
 
 
 using Microsoft.EntityFrameworkCore;
@@ -26,12 +29,14 @@ namespace Loan_Management_System.Models
         public DbSet<Loan> Loans { get; set; }
         public DbSet<RepaymentSchedule> RepaymentSchedules { get; set; }
         public DbSet<Repayment> Repayments { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Deposit> Deposits { get; set; }
+        public DbSet<Withdrawal> Withdrawals { get; set; }
 
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
 
             modelBuilder.Entity<User>().HasQueryFilter(c => !c.DeletedAt.HasValue);
             modelBuilder.Entity<Client>().HasQueryFilter(c => !c.DeletedAt.HasValue);
@@ -40,7 +45,9 @@ namespace Loan_Management_System.Models
             modelBuilder.Entity<Loan>().HasQueryFilter(c => !c.DeletedAt.HasValue);
             modelBuilder.Entity<RepaymentSchedule>().HasQueryFilter(c => !c.DeletedAt.HasValue);
             modelBuilder.Entity<Repayment>().HasQueryFilter(c => !c.DeletedAt.HasValue);
-
+            modelBuilder.Entity<Account>().HasQueryFilter(c => !c.DeletedAt.HasValue);
+            modelBuilder.Entity<Deposit>().HasQueryFilter(c => !c.DeletedAt.HasValue);
+            modelBuilder.Entity<Withdrawal>().HasQueryFilter(c => !c.DeletedAt.HasValue);
 
             base.OnModelCreating(modelBuilder);
 
@@ -68,6 +75,9 @@ namespace Loan_Management_System.Models
                     || e.Entity is Loan
                     || e.Entity is RepaymentSchedule
                     || e.Entity is Repayment
+                    || e.Entity is Account
+                    || e.Entity is Deposit
+                    || e.Entity is Withdrawal
                     )
                 .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Loan_Management_System.Models.LoanApplicationX;
+using Loan_Management_System.Models.AccountX;
 
 namespace Loan_Management_System.Models.ClientX
 {
@@ -12,7 +13,6 @@ namespace Loan_Management_System.Models.ClientX
         public string Address { get; set; }
         public string NIN { get; set; }
         public virtual ICollection<LoanApplication> LoanApplications { get; set; }
-
 
     }
 

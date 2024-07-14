@@ -108,6 +108,11 @@ namespace Loan_Management_System.Controllers
                 // Updating the Repayment schedule
                 schedule.PaidAmount += repayment.Amount;
 
+                if (schedule.PaidAmount > schedule.RepaymentAmount)
+                {
+                    return BadRequest("Can't exceed stipulated Repayment Amount");
+                }
+
                 if (schedule.PaidAmount >= schedule.RepaymentAmount)
                 {
                     schedule.Status = "Paid";

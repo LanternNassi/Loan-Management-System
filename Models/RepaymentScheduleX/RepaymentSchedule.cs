@@ -27,7 +27,6 @@ namespace Loan_Management_System.Models.RepaymentScheduleX
         public DateTime RepaymentDate { get; set; }
         public decimal RepaymentAmount { get; set; }
         public decimal? PaidAmount { get; set; }
-
         public string Status { get; set; } // Pending , Missed , Paid
     }
 

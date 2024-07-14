@@ -9,6 +9,7 @@ using Loan_Management_System.Models;
 using Loan_Management_System.Models.ClientX;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Loan_Management_System.Models.AccountX;
 
 namespace Loan_Management_System.Controllers
 {
@@ -41,8 +42,6 @@ namespace Loan_Management_System.Controllers
             {
                 query = query.Where(c => c.FirstName.Contains(keywords));
             }
-
-            //return Ok(await query.ToListAsync());
 
             return Ok(_mapper.Map<List<ClientDto>>(await query.ToListAsync()));
 
@@ -109,10 +108,21 @@ namespace Loan_Management_System.Controllers
           {
               return Problem("Entity set 'DBContext.Clients'  is null.");
           }
-            _context.Clients.Add(_mapper.Map<Client>(client));
+
+          //Create an account with a client automatically
+
+            _context.Accounts.Add(new Account()
+            {
+                Client = _mapper.Map<Client>(client),
+                Type = "Saving",
+                Balance = 0,
+                InterestRate = 0,
+            });
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetClient", new { id = client.Id }, _mapper.Map<Client>(client));
+
         }
 
         // DELETE: api/Clients/5
@@ -130,7 +140,10 @@ namespace Loan_Management_System.Controllers
                 return NotFound();
             }
 
+            var loans = _context.Loans.Where(c => c.LoanApplication.Client.Id == id);
+
             _context.SoftDelete(client);
+            _context.SoftDelete(loans);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -140,5 +153,7 @@ namespace Loan_Management_System.Controllers
         {
             return (_context.Clients?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+
     }
 }

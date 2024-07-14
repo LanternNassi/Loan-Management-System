@@ -32,6 +32,7 @@ namespace Loan_Management_System.Models.LoanX
         public decimal? InterestRate { get; set; }
         public string Status { get; set; } // E.g., "Active", "Repaid", "Defaulted"
         public decimal OutStandingBalance { get; set; }
+        public LoanApplicationDto? LoanApplication { get; set; }
     }
 
     public class LoanCreation :LoanApplicationDto

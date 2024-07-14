@@ -3,6 +3,7 @@ using System;
 using Loan_Management_System.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Loan_Management_System.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20240706175012_Add_Accounts")]
+    partial class Add_Accounts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,37 +97,6 @@ namespace Loan_Management_System.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
-                });
-
-            modelBuilder.Entity("Loan_Management_System.Models.DepositX.Deposit", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AccountId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("AddedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("numeric");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.ToTable("Deposits");
                 });
 
             modelBuilder.Entity("Loan_Management_System.Models.LoanApplicationX.LoanApplication", b =>
@@ -358,37 +329,6 @@ namespace Loan_Management_System.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Loan_Management_System.Models.WithdrawalX.Withdrawal", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AccountId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("AddedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("numeric");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.ToTable("Withdrawals");
-                });
-
             modelBuilder.Entity("Loan_Management_System.Models.AccountX.Account", b =>
                 {
                     b.HasOne("Loan_Management_System.Models.ClientX.Client", "Client")
@@ -398,17 +338,6 @@ namespace Loan_Management_System.Migrations
                         .IsRequired();
 
                     b.Navigation("Client");
-                });
-
-            modelBuilder.Entity("Loan_Management_System.Models.DepositX.Deposit", b =>
-                {
-                    b.HasOne("Loan_Management_System.Models.AccountX.Account", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("Loan_Management_System.Models.LoanApplicationX.LoanApplication", b =>
@@ -476,17 +405,6 @@ namespace Loan_Management_System.Migrations
                         .IsRequired();
 
                     b.Navigation("RepaymentSchedule");
-                });
-
-            modelBuilder.Entity("Loan_Management_System.Models.WithdrawalX.Withdrawal", b =>
-                {
-                    b.HasOne("Loan_Management_System.Models.AccountX.Account", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("Loan_Management_System.Models.ClientX.Client", b =>
