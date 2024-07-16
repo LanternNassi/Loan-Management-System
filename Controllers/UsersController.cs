@@ -12,8 +12,19 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using System.Text;
 
+using Loan_Management_System.Models.RepaymentsX;
+using Loan_Management_System.Models.DepositX;
+using Loan_Management_System.Models.LoanApplicationX;
+
 namespace Loan_Management_System.Controllers
 {
+
+    public class PaymentsMetric {
+        public decimal amount { get; set; } 
+        public string firstName { get; set; }
+        public string otherNames { get; set; }
+    }
+
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -27,6 +38,63 @@ namespace Loan_Management_System.Controllers
             _context = context;
             _mapper = mapper;
             _config = config;
+        }
+
+        [HttpGet("/api/metrics")]
+        public async Task<IActionResult> GetMetrics(){
+
+            var users = new {
+                admin =  _context.Users.Where(c => c.Role == "admin").Count(),
+                normal = _context.Users.Where(c => c.Role == "normal").Count(),
+            };
+
+            var clients = new {
+                active_clients = _context.Clients.Count(),
+                deleted_clients = 0,
+            };
+
+            var applications = new {
+                approved = _context.LoanApplications.Where(c => c.Status == "Approved").Count(),
+                pending = _context.LoanApplications.Where(c => c.Status == "Pending").Count(),
+                rejected = _context.LoanApplications.Where(c => c.Status == "Rejected").Count(),
+                pending_applications = _mapper.Map<List<LoanApplicationDto>>(await _context.LoanApplications.Where(c => c.Status == "Pending").Include(c => c.Client).OrderByDescending(e => e.AddedAt).Take(4).ToListAsync()),
+
+            };
+
+            var loans = new {
+                active = _context.Loans.Where(c => c.Status == "Active").Count(),
+                repaid = _context.Loans.Where(c => c.Status == "Repaid").Count(),
+                defaulted = _context.Loans.Where(c => c.Status == "Defaulted").Count()
+            };
+
+            var payments = _context.Repayments
+                .Include(c => c.RepaymentSchedule)
+                    .ThenInclude(c => c.Loan)
+                        .ThenInclude(c => c.LoanApplication)
+                            .ThenInclude(c => c.Client)
+                .OrderByDescending(e => e.AddedAt).Take(4).ToList();
+
+            List<PaymentsMetric> processed_payments = new List<PaymentsMetric>();
+            foreach (var payment in payments){
+                processed_payments.Add(
+                    new PaymentsMetric{
+                        firstName = payment.RepaymentSchedule.Loan.LoanApplication.Client.FirstName,
+                        otherNames = payment.RepaymentSchedule.Loan.LoanApplication.Client.OtherNames,
+                        amount = payment.Amount
+                    }
+                );
+            }
+
+            var deposits = _mapper.Map<List<DepositDto>>(_context.Deposits.Include(c => c.Account).ThenInclude(c => c.Client).OrderByDescending(e => e.AddedAt).Take(4).ToList());
+
+            return Ok(new {
+                users,
+                clients,
+                applications,
+                processed_payments,
+                deposits,
+                loans
+            });
         }
 
         // GET: api/Users
