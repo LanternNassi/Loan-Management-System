@@ -171,7 +171,7 @@ namespace Loan_Management_System.Controllers
             total_schedule_amount += repaymentSchedule.RepaymentAmount;
 
 
-            if (total_schedule_amount > loan.LoanAmount)
+            if (total_schedule_amount > (loan.LoanAmount + (loan.LoanAmount*(loan.InterestRate/100))))
             {
                 return BadRequest("Total Repayment schedule Amount cannot exceed Loan Amount");
             }
